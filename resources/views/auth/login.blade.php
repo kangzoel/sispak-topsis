@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Masuk')
+
 @section('content')
 <div class="my-4 text-center">
     <h1 class="display-4">Sistem Pakar</h1>
