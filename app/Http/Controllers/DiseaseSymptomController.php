@@ -26,15 +26,7 @@ class DiseaseSymptomController extends Controller
             'symptom' => 'required|exists:symptoms,id'
         ]);
 
-        foreach ($v['symptom'] as $symptom_id) {
-            $symptom_exists = $diseaseSymptom->symptoms()->where([
-                'disease_id' => $diseaseSymptom->id,
-                'symptom_id' => $symptom_id
-            ])->exists();
-
-            if (!$symptom_exists)
-                $diseaseSymptom->symptoms()->attach($symptom_id);
-        }
+        $diseaseSymptom->symptoms()->sync($v['symptom']);
 
         return redirect('/disease-symptom')
             ->with('alert', [
