@@ -5,13 +5,13 @@
     <h1 class="display-4">Sistem Pakar</h1>
     <p class="h3">Diagnosa Penyakit Paru-Paru</p>
 </div>
-<div class="container">
+<div class="container pt-3">
     <div class="row justify-content-center">
         <div class="col-sm-8 col-lg-4">
             <div class="card shadow border-0 ">
                 <div class="card-body">
-                    <h2 class="card-title">Masuk</h2>
-                    <form method="POST" action="{{ route('login') }}">
+                    <h2 class="card-title mb-4">Masuk</h2>
+                    <form class="card-text" method="POST" action="{{ route('login') }}">
                         @csrf
 
                         <div class="form-group">

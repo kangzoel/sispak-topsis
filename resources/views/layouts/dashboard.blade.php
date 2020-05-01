@@ -43,7 +43,7 @@
                         </li>
                         <li class="nav-item">
                             <x-nav-link :href="url('/disease-symptom')">
-                                Daftar hubungan
+                                Daftar Hubungan
                             </x-nav-link>
                         </li>
                     @endadmin
