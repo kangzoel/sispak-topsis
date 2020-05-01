@@ -36,7 +36,7 @@ class DiseaseSymptomController extends Controller
         return redirect('/disease-symptom')
             ->with('alert', [
                 'type' => 'success',
-                'message' => 'Hubungan gejala berhasil dibuat'
+                'message' => 'Hubungan gejala berhasil disimpan'
             ]);
     }
 }
