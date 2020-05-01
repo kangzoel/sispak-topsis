@@ -2,84 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Disease;
 use App\DiseaseSymptom;
 use Illuminate\Http\Request;
 
 class DiseaseSymptomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $diseases = Disease::paginate(15);
+
+        return view('disease.symptom.index', ['diseases' => $diseases]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function edit(Disease $diseaseSymptom)
     {
-        //
+        return view('disease.symptom.edit', ['disease' => $diseaseSymptom]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(Request $request, Disease $diseaseSymptom)
     {
-        //
-    }
+        $v = $request->validate([
+            'symptom' => 'required|exists:symptoms,id'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\DiseaseSymptom  $diseaseSymptom
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DiseaseSymptom $diseaseSymptom)
-    {
-        //
-    }
+        foreach ($v['symptom'] as $symptom_id) {
+            $symptom_exists = $diseaseSymptom->symptoms()->where([
+                'disease_id' => $diseaseSymptom->id,
+                'symptom_id' => $symptom_id
+            ])->exists();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\DiseaseSymptom  $diseaseSymptom
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DiseaseSymptom $diseaseSymptom)
-    {
-        //
-    }
+            if (!$symptom_exists)
+                $diseaseSymptom->symptoms()->attach($symptom_id);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DiseaseSymptom  $diseaseSymptom
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DiseaseSymptom $diseaseSymptom)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\DiseaseSymptom  $diseaseSymptom
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DiseaseSymptom $diseaseSymptom)
-    {
-        //
+        return redirect('/disease-symptom')
+            ->with('alert', [
+                'type' => 'success',
+                'message' => 'Hubungan gejala berhasil dibuat'
+            ]);
     }
 }

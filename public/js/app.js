@@ -19905,9 +19905,13 @@ module.exports = g;
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-$('[title]').tooltip({
-  placement: 'left'
-});
+if (typeof $('[title]').data('placement') === 'undefined') {
+  $('[title]').tooltip({
+    placement: 'left'
+  });
+} else {
+  $('[title]').tooltip();
+}
 
 /***/ }),
 
