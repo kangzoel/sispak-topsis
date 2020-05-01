@@ -31,9 +31,9 @@
                                         <td>{{ $d->id }}</td>
                                         <td>{{ $d->name }}</td>
                                         <td>
-                                            <a href="/disease-symptom/{{ $d->id }}" class="btn btn-sm btn-primary mr-2">
+                                            <button type="button" data-name="{{ $d->name }}" data-id="{{ $d->id }}" class="btn btn-view btn-sm btn-primary mr-2">
                                                 Lihat
-                                            </a>
+                                            </button>
                                             <a href="/disease-symptom/{{ $d->id }}/edit" class="btn btn-sm btn-primary">
                                                 Edit
                                             </a>
@@ -57,3 +57,73 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gejala ?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px">No.</th>
+                                <th>Nama gejala</th>
+                                <th style="width: 80px">Bobot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        $('.btn-view').click(function() {
+            axios({
+                    method:'get',
+                    url: `/api/symptoms?disease_id=${$(this).data('id')}`,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                })
+                .then(res => {
+                    const $modal = $('#modal')
+                    let html = ''
+
+                    $modal.find('.modal-title').text(`Gejala ${$(this).data('name')}`);
+                    $modal.find('tbody tr').remove()
+
+                    $.each(res.data, function (i, v) {
+                        html += `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${v.name}</td>
+                                <td>${v.weight}</td>
+                            </tr>
+                        `
+                    });
+
+                    $modal.find('tbody').html(html)
+                    $modal.find('a').attr('href', `/disease-symptom/${$(this).data('id')}/edit`);
+                    $modal.modal();
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        })
+    </script>
+@endpush
