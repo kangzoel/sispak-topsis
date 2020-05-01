@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class DiseaseSymptomController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(DiseaseSymptom::class, 'disease_symptom');
+    }
+
     public function index()
     {
         $diseases = Disease::paginate(15);
