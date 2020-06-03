@@ -42,6 +42,18 @@ php artisan serve
 npm run watch       # Di terminal/ command prompt lain
 ```
 
+### Pengguna default
+
+```
+Admin
+email: admin@admin.com
+password: password
+
+User
+email: user@user.com
+password: password
+```
+
 ## Kontribusi
 
 Silakan lakukan pull request untuk mulai berkontribusi ke proyek ini
